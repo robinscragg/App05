@@ -8,7 +8,6 @@ namespace App05MonoGame.Sprites
 {
     public enum DirectionControl
     {
-        Rotational,
         FourDirections
     }
 
@@ -28,7 +27,6 @@ namespace App05MonoGame.Sprites
 
         public PlayerSprite(): base()
         {
-            DirectionControl = DirectionControl.Rotational;
             movement = new MovementController();
         }
 
@@ -64,36 +62,10 @@ namespace App05MonoGame.Sprites
                     IsActive = true;
                 }
             }
-            else if(DirectionControl == DirectionControl.Rotational)
-            {
-                Rotate(keyState);
-            }
 
             base.Update(gameTime);
 
-        }
-
-        private void Rotate(KeyboardState keyState)
-        {
-
-            if (keyState.IsKeyDown(movement.InputKeys.TurnRight))
-            {
-                if (RotationSpeed == 0) RotationSpeed = 1.0f;
-                Rotation += MathHelper.ToRadians(RotationSpeed);
-                Direction = new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation));
-            }
-            else if (keyState.IsKeyDown(movement.InputKeys.TurnLeft))
-            {
-                if (RotationSpeed == 0) RotationSpeed = 1.0f;
-                Rotation -= MathHelper.ToRadians(RotationSpeed);
-                Direction = new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation));
-            }
-
-            if (keyState.IsKeyDown(movement.InputKeys.Forward))
-            {
-                IsActive = true;
-            }
-        }
+        }       
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using App05MonoGame.Controllers;
 using App05MonoGame.Screens;
-using App05MonoGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,7 +10,6 @@ namespace App05MonoGame
     {
         Starting,
         PlayingLevel1,
-        PlayingLevel2,
         Ending
     }
 
@@ -33,12 +31,12 @@ namespace App05MonoGame
     {
         #region Constants
 
-        public const int Game_Height = 720;
-        public const int Game_Width = 1280;
+        public const int Game_Height = 700;
+        public const int Game_Width = 700;
 
-        public const string GameName = "Game Name";
-        public const string ModuleName = "BNU CO453 2021";
-        public const string AuthorNames = "Derek & Andrei";
+        public const string GameName = "Keys";
+        public const string ModuleName = "BNU CO453 2022";
+        public const string AuthorNames = "Robin";
         public const string AppName = "App05: C# MonoGame";
 
         #endregion
@@ -67,8 +65,7 @@ namespace App05MonoGame
         // Screens
 
         private StartScreen startScreen;
-        private CoinsScreen coinsScreen;
-        private AsteroidsScreen asteroidsScreen;
+        public PlayScreen playScreen;
 
         #endregion
 
@@ -139,20 +136,12 @@ namespace App05MonoGame
                     startScreen.Update(gameTime); 
                     break;
                 
-                // Coins Game
                 case GameStates.PlayingLevel1:
-                    if (coinsScreen == null)
-                        coinsScreen = new CoinsScreen(this);
-                    coinsScreen.Update(gameTime);
+                    if (playScreen == null)
+                        playScreen = new PlayScreen(this);
+                    playScreen.Update(gameTime);
                     break;
-                
-                // Asteroids Game
-                case GameStates.PlayingLevel2:
-                    if (asteroidsScreen == null)
-                        asteroidsScreen = new AsteroidsScreen(this);
-                    asteroidsScreen.Update(gameTime);
-                    break;
-                
+                                
                 case GameStates.Ending:
                     break;
                 
@@ -180,13 +169,8 @@ namespace App05MonoGame
                     break;
 
                 case GameStates.PlayingLevel1:
-                    if (coinsScreen != null)
-                        coinsScreen.Draw(spriteBatch, gameTime);
-                    break;
-
-                case GameStates.PlayingLevel2:
-                    if (asteroidsScreen != null)
-                        asteroidsScreen.Draw(spriteBatch, gameTime);
+                    if (playScreen != null)
+                        playScreen.Draw(spriteBatch, gameTime);
                     break;
 
                 case GameStates.Ending:

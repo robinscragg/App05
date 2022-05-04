@@ -1,8 +1,6 @@
 ﻿using App05MonoGame.Sprites;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 
 namespace App05MonoGame.Screens
@@ -16,7 +14,6 @@ namespace App05MonoGame.Screens
         private SpriteFont arialFont;
 
         private Button coinsButton;
-        private Button asteroidsButton;
 
         private List<string> instructions;
 
@@ -37,21 +34,7 @@ namespace App05MonoGame.Screens
             arialFont = game.Content.Load<SpriteFont>("fonts/arial");
             
             SetupCoinsButton();
-            SetupAsteroidsButton();
                 
-        }
-
-        private void SetupAsteroidsButton()
-        {
-            asteroidsButton = new Button(arialFont,
-                game.Content.Load<Texture2D>("Controls/button-icon-png-200"))
-            {
-                Position = new Vector2(1100, 640),
-                Text = "Asteroids",
-                Scale = 0.8f
-            };
-
-            asteroidsButton.click += StartAsteroidsGame;
         }
 
         private void SetupCoinsButton()
@@ -59,8 +42,8 @@ namespace App05MonoGame.Screens
             coinsButton = new Button(arialFont,
                 game.Content.Load<Texture2D>("Controls/button-icon-png-200"))
             {
-                Position = new Vector2(1130, 580),
-                Text = "Coins",
+                Position = new Vector2(App05Game.Game_Width - 150,App05Game.Game_Height - 100),
+                Text = "Start",
                 Scale = 0.6f
             };
 
@@ -74,23 +57,19 @@ namespace App05MonoGame.Screens
         {
             instructions = new List<string>();
 
-            instructions.Add("The player can move around by ...");
-            instructions.Add("Every time the player collides with a coin...");
-            instructions.Add("A dog moves around ...");
-            instructions.Add("Every time the dog collides with the player...");
-            instructions.Add("Energy is lost...");
-            instructions.Add("The game is won when...");
-            instructions.Add("The game is lost when...");
+            instructions.Add("The player can move around by using arrow keys or WASD");
+            instructions.Add("Every time the player collides with a key their score increases");
+            instructions.Add("A dog moves around and shoots at the player");
+            instructions.Add("Every time the dog collides with the player they loose energy");
+            instructions.Add("The player can use the space bar to shoot at the enemy");
+            instructions.Add("Energy is also lost when walking into rocks");
+            instructions.Add("The game is won when the player scores 100");
+            instructions.Add("The game is lost when the player dies");
         }
 
         private void StartCoinsGame(object sender, System.EventArgs e)
         {
             game.GameState = GameStates.PlayingLevel1;
-        }
-
-        private void StartAsteroidsGame(object sender, System.EventArgs e)
-        {
-            game.GameState = GameStates.PlayingLevel2;
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -101,19 +80,17 @@ namespace App05MonoGame.Screens
             foreach(string line in instructions)
             {
                 y += 40;
-                int x = 200;
+                int x = 100;
                 spriteBatch.DrawString(arialFont, line,
                     new Vector2(x, y), Color.White);
             }
 
             coinsButton.Draw(spriteBatch, gameTime);
-            asteroidsButton.Draw(spriteBatch, gameTime);
         }
 
         public void Update(GameTime gameTime)
         {
             coinsButton.Update(gameTime);
-            asteroidsButton.Update(gameTime);
         }
     }
 }

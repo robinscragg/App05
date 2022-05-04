@@ -2,11 +2,12 @@
 using App05MonoGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 
 namespace App05MonoGame.Screens
 {
-    public class CoinsScreen : IUpdateableInterface, IDrawableInterface
+    public class PlayScreen : IUpdateableInterface, IDrawableInterface
     {
         #region Attributes
 
@@ -19,21 +20,29 @@ namespace App05MonoGame.Screens
         private SpriteFont arialFont;
         private SpriteFont calibriFont;
 
-        private AnimatedPlayer playerSprite;
-        private AnimatedSprite enemySprite;
-        private CoinsController coinsController;
+        public AnimatedPlayer playerSprite;
+        public AnimatedSprite enemySprite;
+        public KeysController keysController;
+        public DoorsController doorsController;
+        public RocksController rocksController;
+
+        private double timeElapsed;
+
+        private string[] keys;
 
         #endregion
-        public CoinsScreen(App05Game game)
+        public PlayScreen(App05Game game)
         {
             this.game = game;
+            keys = new string[] { "Down", "Left", "Right", "Up" };
+            timeElapsed = 0;
             LoadContent();
         }
 
         public void LoadContent()
         {
             backgroundImage = game.Content.Load<Texture2D>(
-                "backgrounds/green_background720p");
+                "backgrounds/background");
 
             arialFont = game.Content.Load<SpriteFont>("fonts/arial");
             calibriFont = game.Content.Load<SpriteFont>("fonts/calibri");
@@ -41,7 +50,7 @@ namespace App05MonoGame.Screens
             pauseButton = new Button(arialFont,
                 game.Content.Load<Texture2D>("Controls/button-icon-png-200"))
             {
-                Position = new Vector2(1100, 600),
+                Position = new Vector2(App05Game.Game_Width - 150, App05Game.Game_Height - 100),
                 Text = "Pause",
                 Scale = 0.6f
             };
@@ -50,15 +59,27 @@ namespace App05MonoGame.Screens
 
             SetupAnimatedPlayer();
             SetupEnemy();
-            SetupCoins();
+            SetupKeys();
+            SetupDoors();
+            SetupRocks();
         }
 
         /// <summary>
         /// Create a controller for coins with one coin
         /// </summary>
-        private void SetupCoins()
+        private void SetupKeys()
         {
-            coinsController = new CoinsController(game);
+            keysController = new KeysController(game);
+        }
+
+        private void SetupDoors()
+        {
+            doorsController = new DoorsController(game);
+        }
+
+        private void SetupRocks()
+        {
+            rocksController = new RocksController(game);
         }
 
         /// <summary>
@@ -69,38 +90,35 @@ namespace App05MonoGame.Screens
         {
             Texture2D sheet4x3 = game.Content.Load<Texture2D>("Actors/rsc-sprite-sheet1");
 
-            AnimationController contoller = new AnimationController(game.Graphics, sheet4x3, 4, 3);
+            AnimationController controller = new AnimationController(game.Graphics, sheet4x3, 4, 3);
 
-            string[] keys = new string[] { "Down", "Left", "Right", "Up" };
-            contoller.CreateAnimationGroup(keys);
+            controller.CreateAnimationGroup(keys);
 
             playerSprite = new AnimatedPlayer()
             {
                 CanWalk = true,
                 Scale = 2.0f,
 
-                Position = new Vector2(200, 200),
+                Position = new Vector2(App05Game.Game_Width / 2, App05Game.Game_Height / 2),
                 Speed = 200,
-                Direction = new Vector2(1, 0),
+                Direction = new Vector2(0, 1),
 
                 Rotation = MathHelper.ToRadians(0),
                 RotationSpeed = 0f
             };
 
-            contoller.AppendAnimationsTo(playerSprite);
+            controller.AppendAnimationsTo(playerSprite);
         }
 
         /// <summary>
         /// This is an enemy Sprite with four animations for the four
         /// directions, up, down, left and right.  Has no intelligence!
         /// </summary>
-        private void SetupEnemy()
+        public void SetupEnemy()
         {
             Texture2D sheet4x3 = game.Content.Load<Texture2D>("Actors/rsc-sprite-sheet3");
 
             AnimationController manager = new AnimationController(game.Graphics, sheet4x3, 4, 3);
-
-            string[] keys = new string[] { "Down", "Left", "Right", "Up" };
 
             manager.CreateAnimationGroup(keys);
 
@@ -108,7 +126,7 @@ namespace App05MonoGame.Screens
             {
                 Scale = 2.0f,
 
-                Position = new Vector2(1000, 200),
+                Position = new Vector2(App05Game.Game_Width - 100, App05Game.Game_Height / 2),
                 Direction = new Vector2(-1, 0),
                 Speed = 50,
 
@@ -116,7 +134,36 @@ namespace App05MonoGame.Screens
             };
 
             manager.AppendAnimationsTo(enemySprite);
-            enemySprite.PlayAnimation("Left");
+            RandomMovement(enemySprite);
+            
+        }
+
+        private void RandomMovement(AnimatedSprite movementsprite)
+        {
+            Random random = new Random();
+            int index = random.Next(keys.Length);
+
+            if (index == 0)
+            {
+                movementsprite.Direction = new Vector2(0, 1);
+            }
+
+            else if (index == 1)
+            {
+                movementsprite.Direction = new Vector2(-1, 0);
+            }
+
+            else if (index == 2)
+            {
+                movementsprite.Direction = new Vector2(1, 0);
+            }
+
+            else
+            {
+                movementsprite.Direction = new Vector2(0, -1);
+            }
+
+            movementsprite.PlayAnimation(keys[index]);
         }
 
         private void PauseGame(object sender, System.EventArgs e)
@@ -126,9 +173,11 @@ namespace App05MonoGame.Screens
             if (game.Paused)
             {
                 SoundController.PauseSong();
+                pauseButton.Text = "Play";
             }
             else
             {
+                pauseButton.Text = "Pause";
                 SoundController.ResumeSong();
             }
         }
@@ -142,18 +191,30 @@ namespace App05MonoGame.Screens
 
             if(!game.Paused)
             {
+                timeElapsed = Math.Round(timeElapsed += gameTime.ElapsedGameTime.TotalSeconds, 2);
                 playerSprite.Update(gameTime);
                 enemySprite.Update(gameTime);
 
                 if (playerSprite.HasCollided(enemySprite))
                 {
-                    playerSprite.IsActive = false;
-                    playerSprite.IsAlive = false;
-                    enemySprite.IsActive = false;
+                    playerSprite.Health.Decrease();
                 }
 
-                coinsController.Update(gameTime);
-                coinsController.DetectCollision(playerSprite);
+                if( enemySprite.ReachedEdge == true)
+                {
+                    RandomMovement(enemySprite);
+                    enemySprite.ReachedEdge = false;
+                }
+
+                keysController.Update(gameTime);
+                keysController.DetectCollision(playerSprite);
+
+                doorsController.Update(gameTime);
+                doorsController.DetectCollision(playerSprite);
+
+                rocksController.Update(gameTime);
+                rocksController.DetectCollision(playerSprite);
+             
             }
         }
 
@@ -167,7 +228,9 @@ namespace App05MonoGame.Screens
             pauseButton.Draw(spriteBatch, gameTime);
 
             playerSprite.Draw(spriteBatch, gameTime);
-            coinsController.Draw(spriteBatch, gameTime);
+            keysController.Draw(spriteBatch, gameTime);
+            doorsController.Draw(spriteBatch, gameTime);
+            rocksController.Draw(spriteBatch, gameTime);
             enemySprite.Draw(spriteBatch, gameTime);
 
             DrawGameStatus(spriteBatch);
@@ -179,10 +242,9 @@ namespace App05MonoGame.Screens
         /// </summary>
         public void DrawGameStatus(SpriteBatch spriteBatch)
         {
-            // TODO: Use the Sprite's score and energy
-
-            int score = 0;
-            int energy = 100;
+            
+            int score = playerSprite.Score.Value;
+            int health = playerSprite.Health.Value;
 
             int topMargin = 4;
             int sideMargin = 50;
@@ -193,10 +255,14 @@ namespace App05MonoGame.Screens
             spriteBatch.DrawString(arialFont, status, topLeft, Color.White);
 
             Vector2 gameSize = arialFont.MeasureString(App05Game.GameName);
-            Vector2 topCentre = new Vector2((App05Game.Game_Width / 2 - gameSize.X / 2), topMargin);
-            spriteBatch.DrawString(arialFont, App05Game.GameName, topCentre, Color.White);
+            Vector2 topCentreLeft = new Vector2((App05Game.Game_Width / 2 - gameSize.X / 2 - 100), topMargin);
+            spriteBatch.DrawString(arialFont, App05Game.GameName, topCentreLeft, Color.White);
 
-            string healthText = $"Energy = {energy:##0}%";
+            string time =$"Time = { timeElapsed }";
+            Vector2 topCentreRight = new Vector2((App05Game.Game_Width / 2 - gameSize.X / 2 + 50), topMargin);
+            spriteBatch.DrawString(arialFont, time, topCentreRight, Color.White);
+
+            string healthText = $"Health = {health:##0}%";
             Vector2 healthSize = arialFont.MeasureString(healthText);
             Vector2 topRight = new Vector2(
                 App05Game.Game_Width - (healthSize.X + sideMargin), topMargin);

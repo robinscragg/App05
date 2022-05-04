@@ -13,11 +13,13 @@ namespace App05MonoGame.Sprites
         public Keys Right { get; set; }
         public Keys Up { get; set; }
         public Keys Down { get; set; }
+
+        public Keys LeftLetter { get; set; }
+        public Keys RightLetter { get; set; }
+        public Keys UpLetter { get; set; }
+        public Keys DownLetter { get; set; }
+
         public Keys Shoot { get; set; }
-        public Keys Pickup { get; set; }
-        public Keys Drop { get; set; }
-        public Keys Forward { get; set; }
-        public Keys TurnLeft { get; set; }
-        public Keys TurnRight { get; set; }
+
     }
 }

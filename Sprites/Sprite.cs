@@ -49,6 +49,8 @@ namespace App05MonoGame.Sprites
 
         public bool IsActive { get; set; }
 
+        public bool ReachedEdge { get; set; }
+
         public virtual int Width
         {
             get { return Image.Width; }
@@ -73,8 +75,8 @@ namespace App05MonoGame.Sprites
             }
         }
 
-        public SpriteAttribute Score { get; }
-        public SpriteAttribute Energy { get; }
+        public SpriteAttribute Score { get; set; }
+        public SpriteAttribute Health { get; set; }
 
         // Variables
 
@@ -105,13 +107,16 @@ namespace App05MonoGame.Sprites
             IsVisible = true;
             IsAlive = true;
             IsActive = true;
+            ReachedEdge = false;
 
             Scale = 1;
             Rotation = 0;
             RotationSpeed = 0;
 
+            Boundary = new Rectangle(0,0,App05Game.Game_Width, App05Game.Game_Height);
+
             Score = new SpriteAttribute(0, 100, 0);
-            Energy = new SpriteAttribute(0, 100, 100);
+            Health = new SpriteAttribute(0, 100, 100);
         }
 
         /// <summary>
@@ -157,6 +162,18 @@ namespace App05MonoGame.Sprites
                 {
                     Position = newPosition;
                 }
+                else
+                {
+                    ReachedEdge = true;
+                }
+            }
+            
+
+            if (Health.Value == 0)
+            {
+                IsVisible = false;
+                IsAlive = false;
+                IsActive = false;
             }
         }
 

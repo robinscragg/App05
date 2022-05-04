@@ -12,18 +12,16 @@ namespace App05MonoGame.Controllers
         {
             InputKeys = new InputKeys()
             {
-                // For directions
-
                 Up = Keys.Up,
                 Down = Keys.Down,
                 Left = Keys.Left,
                 Right = Keys.Right,
 
-                // Rotate and Move
-
-                TurnLeft = Keys.A,
-                TurnRight = Keys.D,
-                Forward = Keys.Space
+                UpLetter = Keys.W,
+                DownLetter = Keys.S,
+                LeftLetter = Keys.A,
+                RightLetter = Keys.D,
+                
             };
         }
 
@@ -31,22 +29,22 @@ namespace App05MonoGame.Controllers
         {
             Vector2 Direction = Vector2.Zero;
 
-            if (keyState.IsKeyDown(InputKeys.Right))
+            if (keyState.IsKeyDown(InputKeys.Right) || keyState.IsKeyDown(InputKeys.RightLetter))
             {
                 Direction = new Vector2(1, 0);
             }
 
-            if (keyState.IsKeyDown(InputKeys.Left))
+            if (keyState.IsKeyDown(InputKeys.Left) || keyState.IsKeyDown(InputKeys.LeftLetter))
             {
                 Direction = new Vector2(-1, 0);
             }
 
-            if (keyState.IsKeyDown(InputKeys.Up))
+            if (keyState.IsKeyDown(InputKeys.Up) || keyState.IsKeyDown(InputKeys.UpLetter))
             {
                 Direction = new Vector2(0, -1);
             }
 
-            if (keyState.IsKeyDown(InputKeys.Down))
+            if (keyState.IsKeyDown(InputKeys.Down) || keyState.IsKeyDown(InputKeys.DownLetter))
             {
                 Direction = new Vector2(0, 1);
             }
