@@ -97,12 +97,10 @@ namespace App05MonoGame.Controllers
                 Animation animation = new Animation
                     (
                         graphicsDevice,
-                        keyName, 
-                        SpriteSheets[row - 1], 
+                        keyName,
+                        SpriteSheets[row - 1],
                         frameCount
                     );
-                
-                
 
                 Animations.Add(keyName, animation);
 

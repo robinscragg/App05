@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace App05MonoGame.Sprites
 {
@@ -24,6 +25,8 @@ namespace App05MonoGame.Sprites
         public Texture2D Image { get; set; }
 
         public Vector2 Position { get; set; }
+
+        public Vector2 NewPosition { get; set; }
 
         // A rectangle limiting where the sprite can move
         public Rectangle Boundary { get; set; }
@@ -48,6 +51,8 @@ namespace App05MonoGame.Sprites
         public bool IsAlive { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsRemoved { get; set; }
 
         public bool ReachedEdge { get; set; }
 
@@ -107,6 +112,7 @@ namespace App05MonoGame.Sprites
             IsVisible = true;
             IsAlive = true;
             IsActive = true;
+            IsRemoved = false;
             ReachedEdge = false;
 
             Scale = 1;
@@ -115,7 +121,7 @@ namespace App05MonoGame.Sprites
 
             Boundary = new Rectangle(0,0,App05Game.Game_Width, App05Game.Game_Height);
 
-            Score = new SpriteAttribute(0, 100, 0);
+            Score = new SpriteAttribute(0, 50, 0);
             Health = new SpriteAttribute(0, 100, 100);
         }
 
@@ -127,15 +133,21 @@ namespace App05MonoGame.Sprites
         {
             Image = image;
             Position = new Vector2(x, y);
+            NewPosition = new Vector2(x, y);
+        }
+
+        public Sprite(Texture2D image)
+        {
+            Image = image;
         }
 
         public bool HasCollided(Sprite otherSprite)
         {
-            if(BoundingBox.Intersects(otherSprite.BoundingBox))
+            if (BoundingBox.Intersects(otherSprite.BoundingBox))
             {
                 int margin = 8 * (int)Scale;
                 Rectangle overlap = Rectangle.Intersect(BoundingBox, otherSprite.BoundingBox);
-                if(overlap.Width > margin)
+                if (overlap.Width > margin)
                     return true;
             }
 
@@ -149,26 +161,26 @@ namespace App05MonoGame.Sprites
             if (IsActive && IsAlive)
             {
                 Rotation += MathHelper.ToRadians(RotationSpeed);
-                Vector2 newPosition = Position + ((Direction * Speed) * deltaTime);
+                NewPosition = Position + ((Direction * Speed) * deltaTime);
 
                 if (Boundary.Width == 0 || Boundary.Height == 0)
                 {
-                    Position = newPosition;
+                    Position = NewPosition;
                 }
-                else if (newPosition.X >= Boundary.X &&
-                    newPosition.Y >= Boundary.Y &&
-                    newPosition.X + Width < Boundary.X + Boundary.Width &&
-                    newPosition.Y + Height < Boundary.Y + Boundary.Height)
+                else if (NewPosition.X >= Boundary.X &&
+                    NewPosition.Y >= Boundary.Y &&
+                    NewPosition.X + Width < Boundary.X + Boundary.Width &&
+                    NewPosition.Y + Height < Boundary.Y + Boundary.Height)
                 {
-                    Position = newPosition;
+                    Position = NewPosition;
                 }
                 else
                 {
                     ReachedEdge = true;
                 }
+
             }
             
-
             if (Health.Value == 0)
             {
                 IsVisible = false;

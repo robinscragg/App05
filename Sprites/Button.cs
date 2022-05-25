@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace App05MonoGame.Sprites
 {
@@ -18,7 +19,7 @@ namespace App05MonoGame.Sprites
 
         public string Text { get; set; }
 
-        public event EventHandler click;
+        public event EventHandler Click;
 
         public bool Clicked { get; private set; }
 
@@ -94,10 +95,7 @@ namespace App05MonoGame.Sprites
                 if(currentMouse.LeftButton == ButtonState.Released &&
                    previousMouse.LeftButton == ButtonState.Pressed)
                 {
-                    if(click != null)
-                    {
-                        click(this, new EventArgs());
-                    }
+                    Click?.Invoke(this, new EventArgs());
                 }
             }
         }

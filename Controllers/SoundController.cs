@@ -12,7 +12,8 @@ namespace App05MonoGame.Controllers
     public enum Sounds
     {
         Coins,
-        Collisions
+        Collisions,
+        Door
     }
     
     /// <summary>
@@ -31,6 +32,7 @@ namespace App05MonoGame.Controllers
         public const string SongName = "Adventure";
         public const string CoinsEffect = "CoinEffect";
         public const string CollisionEffect = "CollisionEffect";
+        public const string DoorEffect = "DoorEffect";
 
         #endregion
 
@@ -51,6 +53,7 @@ namespace App05MonoGame.Controllers
 
             SoundEffects.Add(CoinsEffect, content.Load<SoundEffect>("Sounds/Coins"));
             SoundEffects.Add(CollisionEffect, content.Load<SoundEffect>("Sounds/flame"));
+            SoundEffects.Add(DoorEffect, content.Load<SoundEffect>("Sounds/Door"));
         }
         
 
@@ -66,6 +69,8 @@ namespace App05MonoGame.Controllers
                     SoundEffects[CoinsEffect].Play(); break;
                 case Sounds.Collisions:
                     SoundEffects[CollisionEffect].Play(); break;
+                case Sounds.Door:
+                    SoundEffects[DoorEffect].Play();break;
                 default:
                     break;
             }

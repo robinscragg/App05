@@ -3,7 +3,7 @@ using App05MonoGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
+using System.Collections.Generic;
 
 namespace App05MonoGame.Screens
 {
@@ -22,11 +22,14 @@ namespace App05MonoGame.Screens
 
         public AnimatedPlayer playerSprite;
         public AnimatedSprite enemySprite;
+        private Texture2D enemySpriteImage;
         public KeysController keysController;
         public DoorsController doorsController;
         public RocksController rocksController;
 
         private double timeElapsed;
+        private const double delay = 2;
+        private double remainingDelay = delay;
 
         private string[] keys;
 
@@ -55,28 +58,34 @@ namespace App05MonoGame.Screens
                 Scale = 0.6f
             };
 
-            pauseButton.click += PauseGame;
+            pauseButton.Click += PauseGame;
 
-            SetupAnimatedPlayer();
-            SetupEnemy();
             SetupKeys();
             SetupDoors();
+            SetupAnimatedPlayer();
+            SetupEnemy();
             SetupRocks();
         }
 
         /// <summary>
-        /// Create a controller for coins with one coin
+        /// Create a controller for keys with one key
         /// </summary>
         private void SetupKeys()
         {
             keysController = new KeysController(game);
         }
 
+        /// <summary>
+        /// Create a controller for doors with one door
+        /// </summary>
         private void SetupDoors()
         {
             doorsController = new DoorsController(game);
         }
 
+        /// <summary>
+        /// Create a controller for rocks with one rock
+        /// </summary>
         private void SetupRocks()
         {
             rocksController = new RocksController(game);
@@ -116,9 +125,22 @@ namespace App05MonoGame.Screens
         /// </summary>
         public void SetupEnemy()
         {
-            Texture2D sheet4x3 = game.Content.Load<Texture2D>("Actors/rsc-sprite-sheet3");
+            if (doorsController.doorNumber %3 == 0)
+            {
+                 enemySpriteImage = game.Content.Load<Texture2D>("Actors/rsc-sprite-sheet3");
+            }
+            
+            else if (doorsController.doorNumber %2 == 0)
+            {
+                enemySpriteImage = game.Content.Load<Texture2D>("Actors/rsc-sprite-sheet2");
+            }
+            
+            else
+            {
+                enemySpriteImage = game.Content.Load<Texture2D>("Actors/sprite-sheet1");
+            }
 
-            AnimationController manager = new AnimationController(game.Graphics, sheet4x3, 4, 3);
+            AnimationController manager = new AnimationController(game.Graphics, enemySpriteImage, 4, 3);
 
             manager.CreateAnimationGroup(keys);
 
@@ -138,6 +160,11 @@ namespace App05MonoGame.Screens
             
         }
 
+        /// <summary>
+        /// Chooses a random direction for the sprite to walk
+        /// in. Makes sure the sprite is facing the right direction
+        /// </summary>
+        /// <param name="movementsprite"></param>
         private void RandomMovement(AnimatedSprite movementsprite)
         {
             Random random = new Random();
@@ -166,6 +193,11 @@ namespace App05MonoGame.Screens
             movementsprite.PlayAnimation(keys[index]);
         }
 
+        /// <summary>
+        /// When game is paused, song pauses and text on button changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PauseGame(object sender, System.EventArgs e)
         {
              game.Paused = !(game.Paused);
@@ -183,7 +215,9 @@ namespace App05MonoGame.Screens
         }
 
         /// <summary>
-        /// Update player, enemy and coins
+        /// Update player, enemy, keys, doors and rocks
+        /// When player walks into enemy or enemy walks into edge of screen,
+        /// enemy walks in random direction
         /// </summary>
         public void Update(GameTime gameTime)
         {
@@ -191,13 +225,34 @@ namespace App05MonoGame.Screens
 
             if(!game.Paused)
             {
+                var timer = (float) gameTime.ElapsedGameTime.TotalSeconds;
+                remainingDelay -= timer;
                 timeElapsed = Math.Round(timeElapsed += gameTime.ElapsedGameTime.TotalSeconds, 2);
+                if(playerSprite.Health.Value == 0)
+                {
+                    game.GameState = GameStates.Ending;
+
+                }
+
+                if(playerSprite.Score.Value == playerSprite.Score.MaximumValue)
+                {
+                    game.GameState = GameStates.Ending;
+                }
+
+                if(remainingDelay <= 0)
+                {
+                    RandomMovement(enemySprite);
+                    remainingDelay = delay;
+                }
+
                 playerSprite.Update(gameTime);
+
                 enemySprite.Update(gameTime);
 
                 if (playerSprite.HasCollided(enemySprite))
                 {
                     playerSprite.Health.Decrease();
+                    RandomMovement(enemySprite);
                 }
 
                 if( enemySprite.ReachedEdge == true)
@@ -219,7 +274,7 @@ namespace App05MonoGame.Screens
         }
 
         /// <summary>
-        /// Draw Player, enemy and coins
+        /// Draw Player, enemy, keys, doors and rocks
         /// </summary>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
@@ -237,7 +292,7 @@ namespace App05MonoGame.Screens
             DrawGameFooter(spriteBatch);
         }
         /// <summary>
-        /// Display the name of the game and the current score
+        /// Display the name of the game, the time, the current score
         /// and status of the player at the top of the screen
         /// </summary>
         public void DrawGameStatus(SpriteBatch spriteBatch)

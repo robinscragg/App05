@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace App05MonoGame.Sprites
 {
@@ -62,6 +63,8 @@ namespace App05MonoGame.Sprites
                     IsActive = true;
                 }
             }
+
+
 
             base.Update(gameTime);
 

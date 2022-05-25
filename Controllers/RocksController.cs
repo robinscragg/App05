@@ -2,13 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
+using System.Collections.Generic;
 
 namespace App05MonoGame.Controllers
 {
 
     /// <summary>
-    /// This class creates a list of keys which
+    /// This class creates rocks which
     /// can be updated and drawn and checked for
     /// collisions with the player sprite
     /// </summary>
@@ -22,7 +22,7 @@ namespace App05MonoGame.Controllers
 
         private Texture2D rockImage;
 
-        private Sprite rock;
+        public Sprite rock;
 
         /// <summary>
         /// Create a new list of keys
@@ -37,8 +37,8 @@ namespace App05MonoGame.Controllers
         }
 
         /// <summary>
-        /// Create an animated sprite of a copper coin
-        /// which could be collected by the player for a score
+        /// Create a sprite of a rock in a random position
+        /// which when the player walks into looses health
         /// </summary>
         public void CreateRock()
         {
@@ -52,6 +52,9 @@ namespace App05MonoGame.Controllers
 
         }
 
+        /// <summary>
+        /// Removes rock
+        /// </summary>
         public void RemoveRock()
         {
             rock.IsActive = false;
@@ -60,8 +63,8 @@ namespace App05MonoGame.Controllers
         }
 
         /// <summary>
-        /// If the sprite collides with a coin the coin becomes
-        /// invisible and inactive.  A sound is played
+        /// If the player collides with a rock the rock
+        /// the player looses health
         /// </summary>
         public void DetectCollision(Sprite sprite)
         {

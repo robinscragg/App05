@@ -1,8 +1,10 @@
 ﻿using App05MonoGame.Controllers;
 using App05MonoGame.Screens;
+using App05MonoGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace App05MonoGame
 {
@@ -66,6 +68,7 @@ namespace App05MonoGame
 
         private StartScreen startScreen;
         public PlayScreen playScreen;
+        private EndScreen endScreen;
 
         #endregion
 
@@ -143,6 +146,9 @@ namespace App05MonoGame
                     break;
                                 
                 case GameStates.Ending:
+                    if(endScreen == null)
+                        endScreen = new EndScreen(this);
+                    endScreen.Update(gameTime);
                     break;
                 
                 default:
@@ -174,6 +180,8 @@ namespace App05MonoGame
                     break;
 
                 case GameStates.Ending:
+                    if (endScreen != null)
+                        endScreen.Draw(spriteBatch, gameTime);
                     break;
 
                 default:

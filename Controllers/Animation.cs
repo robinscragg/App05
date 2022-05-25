@@ -46,7 +46,7 @@ namespace App05MonoGame.Controllers
                     new Rectangle(0, 0, FrameWidth, FrameHeight));
 
             IsLooping = true;
-
+            
             Start();
         }
 
@@ -56,6 +56,7 @@ namespace App05MonoGame.Controllers
             IsPlaying = true;
             maxFrameTime = 1.0f / (float)FramesPerSecond;
             elapsedTime = 0;
+
         }
 
         public void Stop()
@@ -75,9 +76,16 @@ namespace App05MonoGame.Controllers
                 if (CurrentFrame < NumberOfFrames - 1)
                     CurrentFrame++;
 
+                else if(CurrentFrame == 8 && Name == "door")
+                {
+                    SoundController.PlaySoundEffect(Sounds.Door);
+                    Stop();
+                }
+
                 else if(IsLooping)
                     CurrentFrame = 0;
 
+                
                 elapsedTime = 0;
                 
                 return new Rectangle((CurrentFrame) * FrameWidth, 0,

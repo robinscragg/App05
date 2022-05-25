@@ -47,7 +47,7 @@ namespace App05MonoGame.Screens
                 Scale = 0.6f
             };
 
-            coinsButton.click += StartCoinsGame;
+            coinsButton.Click += StartCoinsGame;
         }
 
         /// <summary>
@@ -55,16 +55,17 @@ namespace App05MonoGame.Screens
         /// </summary>
         private void CreateInstructions()
         {
-            instructions = new List<string>();
-
-            instructions.Add("The player can move around by using arrow keys or WASD");
-            instructions.Add("Every time the player collides with a key their score increases");
-            instructions.Add("A dog moves around and shoots at the player");
-            instructions.Add("Every time the dog collides with the player they loose energy");
-            instructions.Add("The player can use the space bar to shoot at the enemy");
-            instructions.Add("Energy is also lost when walking into rocks");
-            instructions.Add("The game is won when the player scores 100");
-            instructions.Add("The game is lost when the player dies");
+            instructions = new List<string>
+            {
+                "The player can move around by using arrow keys or WASD",
+                "Every time the player collides with a key their score increases",
+                "A dog moves around and shoots at the player",
+                "Every time the dog collides with the player they loose energy",
+                "The player can use the space bar to shoot at the enemy",
+                "Energy is also lost when walking into rocks",
+                "The game is won when the player scores 50",
+                "The game is lost when the player dies"
+            };
         }
 
         private void StartCoinsGame(object sender, System.EventArgs e)

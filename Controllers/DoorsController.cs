@@ -2,13 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
+using System.Collections.Generic;
 
 namespace App05MonoGame.Controllers
 {
 
     /// <summary>
-    /// This class creates a list of keys which
+    /// This class creates doors which
     /// can be updated and drawn and checked for
     /// collisions with the player sprite
     /// </summary>
@@ -20,29 +20,30 @@ namespace App05MonoGame.Controllers
     {
         private App05Game game;
 
-        private Texture2D doorImage;
+        public Texture2D doorImage;
 
-        public Sprite door;
+        public AnimatedSprite door;
 
-        private int doorNumber;
+        public int doorNumber;
 
         private int chosenY;
 
         /// <summary>
-        /// Create a new list of keys
+        /// Create a door
         /// </summary>
         public DoorsController(App05Game game)
         {
             this.game = game;
 
-            doorImage = game.Content.Load<Texture2D>("Actors/door");
+            doorImage = game.Content.Load<Texture2D>("Actors/door_animation");
 
             CreateDoor();
         }
 
         /// <summary>
-        /// Create an animated sprite of a copper coin
-        /// which could be collected by the player for a score
+        /// Create an animation sprite of a door. Door appears on opposite sides every time
+        /// in a random position. Door animation only happens when door is actived
+        /// when key is picked up
         /// </summary>
         public void CreateDoor()
         {
@@ -52,17 +53,26 @@ namespace App05MonoGame.Controllers
 
             if(doorNumber % 2 == 0 )
             {
-                chosenY = 670;
+                chosenY = 550;
             }
 
             else
             {
-                chosenY = 30;
+                chosenY = 50;
             }
 
             int randomX = number.Next(100, App05Game.Game_Width - 100);
 
-            door = new Sprite(doorImage, randomX, chosenY);
+            Animation animation = new Animation(game.Graphics, "door", doorImage, 9);
+
+            door = new AnimatedSprite()
+            {
+                Animation = animation,
+                Image = animation.FirstFrame,
+                Scale = 1.0f,
+                Speed = 0,
+                Position = new Vector2(randomX, chosenY),
+            };
 
             door.IsAlive = false;
             door.IsActive = false;
@@ -70,14 +80,15 @@ namespace App05MonoGame.Controllers
         }
 
         /// <summary>
-        /// If the sprite collides with a coin the coin becomes
-        /// invisible and inactive.  A sound is played
+        /// If the sprite collides with a door a new room
+        /// is made. Every third room, a key mini game is 
+        /// activated. If the player walks through the door before the mini game
+        /// ends, the mini game ends
         /// </summary>
         public void DetectCollision(Sprite sprite)
         {
             if (door.HasCollided(sprite) && door.IsAlive)
             {
-
                 door.IsActive = false;
                 door.IsAlive = false;
                 door.IsVisible = false;
@@ -89,6 +100,17 @@ namespace App05MonoGame.Controllers
                 game.playScreen.keysController.CreateKey();
                 game.playScreen.SetupEnemy();
 
+                if (doorNumber % 3 == 0)
+                {
+                    game.playScreen.keysController.keyGameActive = true;
+                }
+
+                else
+                {
+                    game.playScreen.keysController.ClearKeys();
+                    game.playScreen.keysController.CreateKey();
+                    game.playScreen.keysController.keyGameActive = false;
+                }
             }
         }
 

@@ -7,7 +7,7 @@ namespace App05MonoGame.Controllers
     public class MovementController
     {
         public InputKeys InputKeys { get; set; }
-        
+
         public MovementController()
         {
             InputKeys = new InputKeys()
@@ -21,7 +21,9 @@ namespace App05MonoGame.Controllers
                 DownLetter = Keys.S,
                 LeftLetter = Keys.A,
                 RightLetter = Keys.D,
-                
+
+                Shoot = Keys.Space
+
             };
         }
 
