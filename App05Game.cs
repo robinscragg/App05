@@ -140,7 +140,7 @@ namespace App05MonoGame
                     break;
                 
                 case GameStates.PlayingLevel1:
-                    if (playScreen == null)
+                    if(playScreen == null)
                         playScreen = new PlayScreen(this);
                     playScreen.Update(gameTime);
                     break;

@@ -52,8 +52,6 @@ namespace App05MonoGame.Sprites
 
         public bool IsActive { get; set; }
 
-        public bool IsRemoved { get; set; }
-
         public bool ReachedEdge { get; set; }
 
         public virtual int Width
@@ -112,7 +110,6 @@ namespace App05MonoGame.Sprites
             IsVisible = true;
             IsAlive = true;
             IsActive = true;
-            IsRemoved = false;
             ReachedEdge = false;
 
             Scale = 1;

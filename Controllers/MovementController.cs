@@ -22,8 +22,6 @@ namespace App05MonoGame.Controllers
                 LeftLetter = Keys.A,
                 RightLetter = Keys.D,
 
-                Shoot = Keys.Space
-
             };
         }
 

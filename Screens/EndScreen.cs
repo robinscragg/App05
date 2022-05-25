@@ -59,6 +59,7 @@ namespace App05MonoGame.Screens
 
         private void ReplayCoinsGame(object sender, System.EventArgs e)
         {
+            game.playScreen = null;
             game.GameState = GameStates.PlayingLevel1;
         }
 

@@ -19,7 +19,5 @@ namespace App05MonoGame.Sprites
         public Keys UpLetter { get; set; }
         public Keys DownLetter { get; set; }
 
-        public Keys Shoot { get; set; }
-
     }
 }

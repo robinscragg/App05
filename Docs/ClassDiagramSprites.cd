@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="App05MonoGame.Sprites.AnimatedPlayer">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAEAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\AnimatedPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App05MonoGame.Sprites.AnimatedSprite">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAgAAgAAAAEAQAAAgAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Sprites\AnimatedSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App05MonoGame.Sprites.Button">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAhAgABIAIAAAACgAADAAAAAACCAAAgA=</HashCode>
+      <FileName>Sprites\Button.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="App05MonoGame.Sprites.InputKeys">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAACAAAAAAAAAAAAAAIAAACACAAAgAAgI=</HashCode>
+      <FileName>Sprites\InputKeys.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App05MonoGame.Sprites.PlayerSprite">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAIAAAAA=</HashCode>
+      <FileName>Sprites\PlayerSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App05MonoGame.Sprites.Sprite">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQACEAABAECEoggECKAAEABACAAABAAAAAACCgARBA=</HashCode>
+      <FileName>Sprites\Sprite.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="App05MonoGame.Sprites.SpriteAttribute">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAABBAAAIEAAAAQgQAAAIAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Sprites\SpriteAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="App05MonoGame.Sprites.ICollideableInterface">
+    <Position X="7.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\ICollideableInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="App05MonoGame.Sprites.IDrawableInterface">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\IDrawableInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="App05MonoGame.Sprites.IUpdateableInterface">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\IUpdateableInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="App05MonoGame.Sprites.DirectionControl">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Sprites\PlayerSprite.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
